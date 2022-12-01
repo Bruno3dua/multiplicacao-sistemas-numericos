@@ -14,7 +14,7 @@
 
 <body>
     <main>
-        <form>
+        <form id="formInputs">
             <legend>Multiplicação de sistemas numéricos</legend>
 
             <fieldset>
@@ -34,7 +34,7 @@
                         <input type="number" id="base">
                     </div>
 
-                    <button id="btnCalc">
+                    <button id="btnCalc" form="formInputs">
                         Calcular
                         <img src="./assets/arrow.svg" alt="Seta apontando para a direita">
                     </button>
@@ -45,7 +45,19 @@
 
     <div class="modalWrapper hide">
         <div class="modalCard">
-            <h1>Calculo</h1>
+            <h1>Cálculo:</h1>
+            <div class="calc">
+
+                <p id="multiplicand">1001011101</p>
+                <p id="multiplier">x  1011</p>
+
+                <p>-------------------------</p>
+
+                <div class="container-result">
+                    
+                </div>
+
+            </div>
             <div class="close"></div>
         </div>
     </div>

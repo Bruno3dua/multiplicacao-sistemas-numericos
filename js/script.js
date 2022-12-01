@@ -1,31 +1,91 @@
-import { toggleHideElement } from './utils.js'
+const Modal = {
+    btnClose: document.querySelector(".close"),
+    wrapper: document.querySelector(".modalWrapper"),
+
+    open() {
+        Modal.wrapper.classList.remove('hide')
+    },
+
+    close() {
+        Modal.wrapper.classList.add('hide')
+    }
+}
 
 const form = document.querySelector('form')
-const btnClose = document.querySelector('.close')
-
-const modal = document.querySelector('.modalWrapper')
-const errorMsg = document.querySelector('.error')
-
 const firstNumber = document.querySelector('#firstNumber')
 const secondNumber = document.querySelector('#secondNumber')
 const base = document.querySelector('#base')
 
-const multiplicand = firstNumber.value
-const multiplier = secondNumber.value
+const multiplierDisplay = document.querySelector('#multiplier')
+const multiplicandDisplay = document.querySelector('#multiplicand')
 
-function multiply(number1, number2, base = 10) {
-    return number1 * number2
+const containerResult = document.querySelector('.container-result')
+
+let lenghtOfMultiplier
+let lenghtOfMultiplicand
+
+function multiply(multiplicand, multiplaier, base = 10) {
+    let resultArray = []
+    let sobe = 0
+
+    lenghtOfMultiplier = secondNumber.value.length
+    lenghtOfMultiplicand = firstNumber.value.length
+
+    for (let i = lenghtOfMultiplier; i > 0; i--) {
+        for (let j = lenghtOfMultiplicand; j > 0; j--) {
+
+
+            let multiplication = multiplicand[j - 1] * multiplaier[i - 1]
+
+            let rest = (multiplication + sobe) % base
+            let result = Math.floor((multiplication + sobe) / base)
+
+            sobe = result
+            resultArray.unshift(rest)
+        }
+    }
+
+    if (sobe != 0)
+        resultArray.unshift(sobe)
+    return resultArray
+}
+
+function printLineResult(line) {
+    let strResult = ''
+    for (let i = 0; i < line.length; i++) {
+        strResult += line[i]
+    }
+    return strResult
+}
+
+function updateDisplay() {
+    multiplicandDisplay.innerHTML = firstNumber.value
+    multiplierDisplay.innerHTML = 'x   ' + secondNumber.value
 }
 
 form.onsubmit = (e) => {
     e.preventDefault()
 
-    toggleHideElement(modal)
-    console.log(multiplicand)
-    console.log(multiplier)
-    console.log(multiply(multiplicand, multiplier, 10)) 
+    multiply(firstNumber.value, secondNumber.value, base.value)
+
+    for (let i = 0; i < lenghtOfMultiplier; i++) {
+        console.log('ok')
+        let lineResult = multiply(firstNumber.value, secondNumber.value, base.value)
+        containerResult.innerHTML += `<p>${printLineResult(lineResult)}</p>`
+    }
+
+    Modal.open()
+    updateDisplay()
 }
 
-btnClose.addEventListener('click', () => {
-    toggleHideElement(modal)
+Modal.btnClose.addEventListener('click', () => {
+    Modal.close()
 })
+
+
+
+
+// console.log('multiplicand: ' + multiplicand[j-1])
+// console.log('multiplier: ' + multiplaier[i-1])
+// console.log('resto: ' + rest)
+// console.log('multiplicação: ' + multiplicand[j-1] * multiplaier[i-1])
