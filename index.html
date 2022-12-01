@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplicação</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="./js/script.js" defer type='module'></script>
+</head>
+
+<body>
+    <main>
+        <form>
+            <legend>Multiplicação de sistemas numéricos</legend>
+
+            <fieldset>
+                <div class="inputWrapper">
+                    <label for="firstNumber">Número 1:</label>
+                    <input type="text" id="firstNumber">
+                </div>
+
+                <div class="inputWrapper">
+                    <label for="secondNumber">Número 2:</label>
+                    <input type="text" id="secondNumber">
+                </div>
+
+                <div class="calcWrapper">
+                    <div class="inputWrapper">
+                        <label for="base">Base:</label>
+                        <input type="number" id="base">
+                    </div>
+
+                    <button id="btnCalc">
+                        Calcular
+                        <img src="./assets/arrow.svg" alt="Seta apontando para a direita">
+                    </button>
+                </div>
+            </fieldset>
+        </form>
+    </main>
+
+    <div class="modalWrapper hide">
+        <div class="modalCard">
+            <h1>Calculo</h1>
+            <div class="close"></div>
+        </div>
+    </div>
+
+    <div class="error hide">
+        <p>Digite apenas números</p>
+    </div>
+</body>
+
+</html>
