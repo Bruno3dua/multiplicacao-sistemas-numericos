@@ -1,3 +1,24 @@
+import { resultToString, getBiggestElementLength, createNewMatrix, fillUndefinedElements } from "./utils.js"
+
+const firstNumber = document.querySelector('#firstNumber')
+const secondNumber = document.querySelector('#secondNumber')
+const form = document.querySelector('form')
+const multiplierDisplay = document.querySelector('#multiplier')
+const multiplicandDisplay = document.querySelector('#multiplicand')
+const containerResult = document.querySelector('.container-result')
+const sumResult = document.querySelector('#sumResult')
+
+let countLines = []
+
+
+const Operation = {
+    multiplicand: '',
+    multiplaier: '',
+    lenghtOfMultiplicand: '',
+    lenghtOfMultiplier: '',
+    base: document.querySelector('#base') 
+}
+
 const Modal = {
     btnClose: document.querySelector(".close"),
     wrapper: document.querySelector(".modalWrapper"),
@@ -11,38 +32,59 @@ const Modal = {
     }
 }
 
-const form = document.querySelector('form')
-const firstNumber = document.querySelector('#firstNumber')
-const secondNumber = document.querySelector('#secondNumber')
-const base = document.querySelector('#base')
+const Alert = {
+    msg: document.querySelector('.error'),
+    open() {
+        this.msg.classList.remove('hide')
+    },
+    close() {
+        this.msg.classList.add('hide')
+    }
+}
 
-const multiplierDisplay = document.querySelector('#multiplier')
-const multiplicandDisplay = document.querySelector('#multiplicand')
+function areValuesValid() {
+    for (let i = 0; i < Operation.lenghtOfMultiplicand; i++) {
+        if (Operation.multiplicand[i] >= Operation.base.value)
+            return false
+    }
+    for (let i = 0; i < Operation.lenghtOfMultiplier; i++) {
+        if (Operation.multiplaier[i] >= Operation.base.value)
+            return false     
+    }
+    return true
+}
 
-const containerResult = document.querySelector('.container-result')
 
-let lenghtOfMultiplier
-let lenghtOfMultiplicand
+function updateDisplay() {
+    multiplicandDisplay.innerHTML = firstNumber.value
+    multiplierDisplay.innerHTML = `<p> <span>x</span>  ${secondNumber.value}</p> ` 
+}
 
-function multiply(multiplicand, multiplaier, base = 10) {
+function updateOperation() {
+    Operation.multiplicand = firstNumber.value
+    Operation.multiplaier = secondNumber.value
+    Operation.lenghtOfMultiplicand = firstNumber.value.length
+    Operation.lenghtOfMultiplier = secondNumber.value.length
+}
+
+function resetResult() {
+    containerResult.innerHTML = ''
+    countLines = []
+}
+
+function multiply(multiplicand, multiplaier, base) {
     let resultArray = []
     let sobe = 0
 
-    lenghtOfMultiplier = secondNumber.value.length
-    lenghtOfMultiplicand = firstNumber.value.length
+    for (let j = Operation.lenghtOfMultiplicand; j > 0; j--) {
 
-    for (let i = lenghtOfMultiplier; i > 0; i--) {
-        for (let j = lenghtOfMultiplicand; j > 0; j--) {
+        let multiplication = multiplicand[j - 1] * multiplaier
 
+        let rest = (multiplication + sobe) % base
+        let result = Math.floor((multiplication + sobe) / base)
 
-            let multiplication = multiplicand[j - 1] * multiplaier[i - 1]
-
-            let rest = (multiplication + sobe) % base
-            let result = Math.floor((multiplication + sobe) / base)
-
-            sobe = result
-            resultArray.unshift(rest)
-        }
+        sobe = result
+        resultArray.unshift(rest)
     }
 
     if (sobe != 0)
@@ -50,42 +92,84 @@ function multiply(multiplicand, multiplaier, base = 10) {
     return resultArray
 }
 
-function printLineResult(line) {
-    let strResult = ''
-    for (let i = 0; i < line.length; i++) {
-        strResult += line[i]
+function sum(elements, base) {
+
+    let sobe = 0
+    let resultArray = []
+    let sumCount = elements.length
+    let biggestElementLength = getBiggestElementLength(elements)
+
+    let matrix = createNewMatrix(sumCount, biggestElementLength)
+
+    fillUndefinedElements(elements)
+
+    // fill the matrix
+    for (let i = 0; i < sumCount; i++) {
+        for (let j = biggestElementLength - 1; j >= 0; j--) {
+            matrix[i][j] = (elements[i])[j]
+        }
     }
-    return strResult
+
+    // sum results 
+    for (let j = biggestElementLength - 1; j >= 0; j--) {
+        let columnSum = 0
+        for (let i = 0; i < sumCount; i++) {
+            columnSum = columnSum + Number(matrix[i][j])
+        }
+
+        let rest = (columnSum + sobe) % base
+
+        sobe = Math.floor((columnSum + sobe) / base)
+        resultArray.unshift(rest)
+    }
+    if (sobe != 0)
+        resultArray.unshift(sobe)
+    return resultArray
 }
 
-function updateDisplay() {
-    multiplicandDisplay.innerHTML = firstNumber.value
-    multiplierDisplay.innerHTML = 'x   ' + secondNumber.value
-}
 
 form.onsubmit = (e) => {
     e.preventDefault()
+    updateOperation()
+    areValuesValid()
 
-    multiply(firstNumber.value, secondNumber.value, base.value)
+    let inputIsNotANumber = isNaN(Number(firstNumber.value)) || isNaN(Number(secondNumber.value)) 
+    let zeros = ''
 
-    for (let i = 0; i < lenghtOfMultiplier; i++) {
-        console.log('ok')
-        let lineResult = multiply(firstNumber.value, secondNumber.value, base.value)
-        containerResult.innerHTML += `<p>${printLineResult(lineResult)}</p>`
+    if(inputIsNotANumber) {
+        Alert.open()
+        setTimeout(() => {
+            Alert.close()
+        }, 2000)
+        return
     }
 
-    Modal.open()
+    if(!areValuesValid()) {
+        Alert.msg.innerHTML = 'Você deve digitar um número válido de acordo com a base'
+        Alert.open()
+        setTimeout(() => {
+            Alert.close()
+        }, 3000)
+        return
+    }
+
+    for (let i = Operation.lenghtOfMultiplier; i > 0; i--) {
+        let newLine = multiply(Operation.multiplicand, Operation.multiplaier[i - 1], Operation.base.value)
+        let resultString = `<p>${resultToString(newLine)}<span>${zeros}</span></p>`
+        containerResult.innerHTML += resultString
+        countLines.push(resultToString(newLine) + zeros)
+
+        zeros += '0'
+    }
+
     updateDisplay()
+
+    Modal.open()
+
+    sumResult.innerHTML = resultToString(sum(countLines, Operation.base.value))
 }
 
 Modal.btnClose.addEventListener('click', () => {
     Modal.close()
+    resetResult()
 })
-
-
-
-
-// console.log('multiplicand: ' + multiplicand[j-1])
-// console.log('multiplier: ' + multiplaier[i-1])
-// console.log('resto: ' + rest)
-// console.log('multiplicação: ' + multiplicand[j-1] * multiplaier[i-1])

@@ -20,18 +20,18 @@
             <fieldset>
                 <div class="inputWrapper">
                     <label for="firstNumber">Número 1:</label>
-                    <input type="text" id="firstNumber">
+                    <input type="text" id="firstNumber" required>
                 </div>
 
                 <div class="inputWrapper">
                     <label for="secondNumber">Número 2:</label>
-                    <input type="text" id="secondNumber">
+                    <input type="text" id="secondNumber" required>
                 </div>
 
                 <div class="calcWrapper">
                     <div class="inputWrapper">
                         <label for="base">Base:</label>
-                        <input type="number" id="base">
+                        <input type="number" id="base" required>
                     </div>
 
                     <button id="btnCalc" form="formInputs">
@@ -47,16 +47,12 @@
         <div class="modalCard">
             <h1>Cálculo:</h1>
             <div class="calc">
-
                 <p id="multiplicand">1001011101</p>
-                <p id="multiplier">x  1011</p>
-
-                <p>-------------------------</p>
-
-                <div class="container-result">
-                    
-                </div>
-
+                <p id="multiplier">x 1011</p>
+                <div class="line"></div>
+                <div class="container-result"></div>
+                <div class="line"></div>
+                <p id="sumResult"></p>
             </div>
             <div class="close"></div>
         </div>
