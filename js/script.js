@@ -44,11 +44,11 @@ const Alert = {
 
 function areValuesValid() {
     for (let i = 0; i < Operation.lenghtOfMultiplicand; i++) {
-        if (Operation.multiplicand[i] >= Operation.base.value)
+        if (Operation.multiplicand[i] >= Number(Operation.base.value))
             return false
     }
     for (let i = 0; i < Operation.lenghtOfMultiplier; i++) {
-        if (Operation.multiplaier[i] >= Operation.base.value)
+        if (Operation.multiplaier[i] >= Number(Operation.base.value))
             return false     
     }
     return true
