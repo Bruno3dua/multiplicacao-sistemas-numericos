@@ -137,6 +137,7 @@ form.onsubmit = (e) => {
     let zeros = ''
 
     if(inputIsNotANumber) {
+        Alert.msg.innerHTML = 'Digite apenas números'
         Alert.open()
         setTimeout(() => {
             Alert.close()
