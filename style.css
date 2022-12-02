@@ -11,8 +11,9 @@
 body {
     background-color: #190424;
     font-size: 1.6rem;
-    display: grid;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 100vh;
     font-family: "Roboto", sans-serif;
 }
@@ -34,7 +35,6 @@ main {
     background-color: white;
     box-shadow: 0 .2rem .4rem rgba(0, 0, 0, 0.1);
     border-radius: .6rem;
-    margin-top: -8rem;
 }
 
 form {
@@ -222,5 +222,18 @@ button:focus{
     }
     100% {
         top: 0
+    }
+}
+
+/* media querys */
+
+@media (max-width: 590px) {
+
+    body {
+        width: 100vw;
+        height: 100vh;
+    }
+    main {
+        transform: scale(.7);
     }
 }
