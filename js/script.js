@@ -54,7 +54,6 @@ function areValuesValid() {
     return true
 }
 
-
 function updateDisplay() {
     multiplicandDisplay.innerHTML = firstNumber.value
     multiplierDisplay.innerHTML = `<p> <span>x</span>  ${secondNumber.value}</p> ` 
@@ -74,27 +73,27 @@ function resetResult() {
 
 function multiply(multiplicand, multiplaier, base) {
     let resultArray = []
-    let sobe = 0
+    let integerDivision = 0
 
     for (let j = Operation.lenghtOfMultiplicand; j > 0; j--) {
 
         let multiplication = multiplicand[j - 1] * multiplaier
 
-        let rest = (multiplication + sobe) % base
-        let result = Math.floor((multiplication + sobe) / base)
+        let rest = (multiplication + integerDivision) % base
+        let result = Math.floor((multiplication + integerDivision) / base)
 
-        sobe = result
+        integerDivision = result
         resultArray.unshift(rest)
     }
 
-    if (sobe != 0)
-        resultArray.unshift(sobe)
+    if (integerDivision != 0)
+        resultArray.unshift(integerDivision)
     return resultArray
 }
 
 function sum(elements, base) {
 
-    let sobe = 0
+    let integerDivision = 0
     let resultArray = []
     let sumCount = elements.length
     let biggestElementLength = getBiggestElementLength(elements)
@@ -117,13 +116,13 @@ function sum(elements, base) {
             columnSum = columnSum + Number(matrix[i][j])
         }
 
-        let rest = (columnSum + sobe) % base
+        let rest = (columnSum + integerDivision) % base
 
-        sobe = Math.floor((columnSum + sobe) / base)
+        integerDivision = Math.floor((columnSum + integerDivision) / base)
         resultArray.unshift(rest)
     }
-    if (sobe != 0)
-        resultArray.unshift(sobe)
+    if (integerDivision != 0)
+        resultArray.unshift(integerDivision)
     return resultArray
 }
 
